@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="edu.eci.cvds.sampleprj.dao.mybatis.mappers.ClienteMapper">
 
     <select parameterType="map" id="consultarClientes" resultMap="ClienteResult">
@@ -29,9 +29,10 @@
         left join VI_ITEMS as i on ir.ITEMS_id=i.id
         left join VI_TIPOITEM as ti on i.TIPOITEM_id=ti.id
     </select>
-    
+
     <insert id="registrarCliente" parameterType="map">
-        insert into VI_CLIENTES values(#{cliente.documento},#{cliente.nombre},#{cliente.telefono},#{cliente.direccion},#{cliente.email},#{cliente.vetado});
+        insert into VI_CLIENTES(documento, nombre, telefono, direccion, email, vetado)
+        values (#{cliente.documento}, #{cliente.nombre}, #{cliente.telefono}, #{cliente.direccion}, #{cliente.email}, #{cliente.vetado})
     </insert>
 
     <select parameterType="map" id="consultarCliente" resultMap="ClienteResult">
@@ -72,7 +73,7 @@
     <insert id="agregarItemRentadoACliente" parameterType="map">
         insert into VI_ITEMRENTADO(CLIENTES_documento,ITEMS_id,fechainiciorenta, fechafinrenta) values (#{idcli},#{idit},#{fechainicio},#{fechafin});
     </insert>
-    
+
     <resultMap id="ClienteResult" type="Cliente">
         <id property="documento" column="documentoR"/>
         <result property="nombre" column="nombreR"/>

@@ -23,12 +23,19 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ClienteMapper;
 import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ItemMapper;
 import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ItemRentadoMapper;
+import edu.eci.cvds.samples.entities.Cliente;
 import edu.eci.cvds.samples.entities.Item;
 import edu.eci.cvds.samples.entities.TipoItem;
+import edu.eci.cvds.samples.services.ExcepcionServiciosAlquiler;
+import edu.eci.cvds.samples.services.ServiciosAlquiler;
+import edu.eci.cvds.samples.services.ServiciosAlquilerFactory;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -66,40 +73,46 @@ public class MyBatisExample {
      * @param args
      * @throws SQLException 
      */
-    public static void main(String args[]) throws SQLException, ParseException {
+    public static void main(String args[]) throws SQLException, ParseException, ExcepcionServiciosAlquiler {
         SqlSessionFactory sessionfact = getSqlSessionFactory();
         SqlSession sqlss = sessionfact.openSession();
         ClienteMapper cm = sqlss.getMapper(ClienteMapper.class);
-        ItemMapper ir = sqlss.getMapper(ItemMapper.class);
-        ItemRentadoMapper im = sqlss.getMapper(ItemRentadoMapper.class);
 
-        System.out.println("Consultar Clientes");
-
-        System.out.println(cm.consultarClientes());
-
-        System.out.println("Consultar cliente");
-        System.out.println(cm.consultarCliente(2));
-
-        cm.agregarItemRentadoACliente(1,2 ,new SimpleDateFormat("yyyy/MM/dd").parse("2022/09/28"),new SimpleDateFormat("yyyy/MM/dd").parse("2022/10/28"));
-        System.out.println("item rentado agregado");
-
-        System.out.println("Consultar item agregados a clientes");
-        System.out.println(cm.consultarCliente(1));
-
-        TipoItem tipoItem = new TipoItem(1,"Batman");
-        ir.insertarItem(new Item(tipoItem,97804578,"Batman cvds","batman prueba",new SimpleDateFormat("yyy-MM-dd").parse("2020-10-01"),80,"cvd","accion"));
-        System.out.println("Item insertado");
-
-        System.out.println("consultar item 45612");
-        System.out.println(ir.consultarItem(97804578));
-
-        System.out.println("consultar items");
-        System.out.println(ir.consultarItems());
+        ServiciosAlquiler serviciosAlquiler = ServiciosAlquilerFactory.getInstance().getServiciosAlquiler();
+        try {
+            System.out.println(serviciosAlquiler.consultarCliente(69).getNombre());
+        }catch (ExcepcionServiciosAlquiler e){
+            e.printStackTrace();
+        }
+        Cliente c = new Cliente("Maradona", 89797, "867867643", "avenida 53","diego10@gmail.com");
+        cm.registrarCliente(c);
+        System.out.println("Cliente registrado");
+//
+ //       System.out.println("Consultar Clientes");
+//
+//        System.out.println(cm.consultarClientes());
+//
+//        System.out.println("Consultar cliente");
+//        System.out.println(cm.consultarCliente(2));
+//
+//        cm.agregarItemRentadoACliente(1,2 ,new SimpleDateFormat("yyyy/MM/dd").parse("2022/09/28"),new SimpleDateFormat("yyyy/MM/dd").parse("2022/10/28"));
+//        System.out.println("item rentado agregado");
+//
+//        System.out.println("Consultar item agregados a clientes");
+//        System.out.println(cm.consultarCliente(1));
+//
+//        TipoItem tipoItem = new TipoItem(1,"Batman");
+//        ir.insertarItem(new Item(tipoItem,804578,"Batman cvds","batman prueba",new SimpleDateFormat("yyy-MM-dd").parse("2020-10-01"),80,"cvd","accion"));
+//        System.out.println("Item insertado");
+//
+//        System.out.println("consultar item 45612");
+//        System.out.println(ir.consultarItem(804578));
+//
+//        System.out.println("consultar items");
+//        System.out.println(ir.consultarItems());
 
         sqlss.commit();
         sqlss.close();
 
     }
-
-
 }

@@ -43,7 +43,6 @@ public class JDBCExample {
             Connection con=DriverManager.getConnection(url,user,pwd);
             con.setAutoCommit(false);
 
-
             System.out.println("Valor total pedido 1:"+valorTotalPedido(con, 1));
 
             List<String> prodsPedido=nombresProductosPedido(con, 1);
@@ -57,7 +56,7 @@ public class JDBCExample {
             System.out.println("-----------------------");
 
 
-            int suCodigoECI=2144614;
+            int suCodigoECI=214154614;
             registrarNuevoProducto(con, suCodigoECI, "SU NOMBRE", 99999999);
             con.commit();
 

@@ -2,6 +2,8 @@ package edu.eci.cvds.sampleprj.dao.mybatis.mappers;
 
 import java.util.Date;
 import java.util.List;
+
+import edu.eci.cvds.samples.entities.ItemRentado;
 import org.apache.ibatis.annotations.Param;
 
 import edu.eci.cvds.samples.entities.Cliente;
@@ -33,5 +35,12 @@ public interface ClienteMapper {
      * @return 
      */
     public List<Cliente> consultarClientes();
+
+    void registrarCliente(@Param("cliente") Cliente c);
+
+    void vetarCliente(long docu, boolean estado);
+
+    List<ItemRentado> consultarItems(@Param("idcliente") long id);
+
     
 }
